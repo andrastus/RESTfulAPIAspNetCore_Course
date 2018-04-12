@@ -1,4 +1,5 @@
-﻿using Library.API.Helpers;
+﻿using AutoMapper;
+using Library.API.Helpers;
 using Library.API.Models;
 using Library.API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -19,22 +20,26 @@ namespace Library.API.Controllers
             this.libraryRepository = libraryRepository;
         }
 
-        [HttpGet(])
+        [HttpGet()]
         public IActionResult GetAuthors()
         {
             var authorsFromRepository = libraryRepository.GetAuthors();
 
-            var authors = new List<AuthorDto>();
-            foreach (var author in authorsFromRepository)
-            {
-                authors.Add(new AuthorDto()
-                {
-                    Id = author.Id,
-                    Name = $"{author.FirstName} {author.LastName}",
-                    Genre = author.Genre,
-                    Age = author.DateOfBirth.GetCurrentAge()
-                });
-            }
+            //Mapper configured in startup.cs
+            var authors = Mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepository);
+
+            //Let's use automapper to do this
+            //var authors = new List<AuthorDto>();
+            //foreach (var author in authorsFromRepository)
+            //{
+            //    authors.Add(new AuthorDto()
+            //    {
+            //        Id = author.Id,
+            //        Name = $"{author.FirstName} {author.LastName}",
+            //        Genre = author.Genre,
+            //        Age = author.DateOfBirth.GetCurrentAge()
+            //    });
+            //}
 
             return new JsonResult(authors);
         }
