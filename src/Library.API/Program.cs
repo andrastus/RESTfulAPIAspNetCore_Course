@@ -9,13 +9,15 @@ namespace Library.API
 {
     public class Program
     {
+
+        // Responsible for configuring and running the application
         public static void Main(string[] args)
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
-                .UseStartup<Startup>()
+                .UseStartup<Startup>() //Startup class
                 .Build();
 
             host.Run();
