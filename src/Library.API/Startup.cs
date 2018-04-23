@@ -40,7 +40,7 @@ namespace Library.API
             {
                 setupAction.ReturnHttpNotAcceptable = true;
                 setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter()); //default is first one in this list
-
+                setupAction.InputFormatters.Add(new XmlDataContractSerializerInputFormatter()); //XmlDataContractSerializer supports DateTime and DateTimeOffset fields
             });
 
             // register the DbContext on the container, getting the connection string from
@@ -83,6 +83,10 @@ namespace Library.API
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.GetCurrentAge()));
 
                 cfg.CreateMap<Entities.Book, Models.BookDto>();
+
+                cfg.CreateMap<Models.AuthorForCreationDto, Entities.Author>();
+
+                cfg.CreateMap<Models.BookForCreationDto, Entities.Book>();
             });
 
             libraryContext.EnsureSeedDataForContext();
